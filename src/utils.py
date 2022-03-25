@@ -5,6 +5,7 @@ import networkx as nx
 import numpy as np
 import scipy.sparse as sp
 import torch
+import pybind_11_example as pbe
 
 from normalization import fetch_normalization, row_normalize
 
@@ -102,6 +103,27 @@ def load_citation(dataset_str="cora", normalization="AugNormAdj", porting_to_tor
         idx_test = torch.LongTensor(idx_test)
         degree = torch.LongTensor(degree)
     learning_type = "transductive"
+
+    # adjdense = adj.todense()
+    # # print("adj ", adj.type())
+    # # print("features", features.shape())
+    featurestemp = features.tolist()
+    count_of_features = pbe.zero_count_cpp(featurestemp)
+    count_of_total_features = len(featurestemp) * len(featurestemp[0])
+    # print("features_zero_Count",count_of_features)
+    # print("features_total", len(featurestemp) * len(featurestemp[0]))
+    print("features_percent", (1 - (count_of_features / count_of_total_features)) * 100)
+    ####
+    # print("ajd type", type(adj))
+    # adjtemp = adj.todense().tolist()
+    adjtemp = adj.todense().tolist()
+    count_of_adj = pbe.zero_count_cpp(adjtemp)
+    count_total_adj = len(adjtemp) * len(adjtemp[0])
+    # print("adj_zero_Count",count_of_adj)
+    # print("adj_total", len(adjtemp) * len(adjtemp[0]))
+    print("adj_percent", (1 - (count_of_adj / count_total_adj))* 100)
+    # print("lables", labels.shape)
+    exit(0)
     return adj, features, labels, idx_train, idx_val, idx_test, degree, learning_type
 
 def sgc_precompute(features, adj, degree):
@@ -154,6 +176,7 @@ def load_reddit_data(normalization="AugNormAdj", porting_to_torch=True, data_pat
         val_index = torch.LongTensor(val_index)
         test_index = torch.LongTensor(test_index)
     learning_type = "inductive"
+    
     return adj, train_adj, features, train_features, labels, train_index, val_index, test_index, degree, learning_type
 
 

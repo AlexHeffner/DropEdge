@@ -106,3 +106,15 @@ venv.bak/
 # check scripts
 check.sh
 reproduce_check.py
+
+src/build/*
+src/libtorch/*
+src/build/*
+src/libtorch/lib/libdnnl.a
+src/libtorch/lib/libtorch_cpu.so
+src/libtorch-shared-with-deps-latest.zip
+src/*.pyc
+src/**/build
+src/**/libtorch
+src/*.zip
+src/pybind_11_example.cpython-38-darwin.so
