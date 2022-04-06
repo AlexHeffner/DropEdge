@@ -19,6 +19,7 @@ long zero_count(vector<vector<double>> input){
     // ofstream file_out_zeros;
     // file_out_zeros.open(filenamezeros, std::ios_base::app);
     // file_out_zeros  << count1 << ", " << count2 << endl;
+     // pip3 install -e . -vvv   
     py::cast(count);
     return count;
 }

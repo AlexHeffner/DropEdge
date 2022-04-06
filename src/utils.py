@@ -89,7 +89,7 @@ def load_citation(dataset_str="cora", normalization="AugNormAdj", porting_to_tor
     else:
         raise ValueError("Task type: %s is not supported. Available option: full and semi.")
 
-    adj, features = preprocess_citation(adj, features, normalization)
+    adj, features = preprocess_citation(adj, features, normalization="FirstOrderGCN")
     features = np.array(features.todense())
     labels = np.argmax(labels, axis=1)
     # porting to pytorch
@@ -110,18 +110,22 @@ def load_citation(dataset_str="cora", normalization="AugNormAdj", porting_to_tor
     featurestemp = features.tolist()
     count_of_features = pbe.zero_count_cpp(featurestemp)
     count_of_total_features = len(featurestemp) * len(featurestemp[0])
-    # print("features_zero_Count",count_of_features)
-    # print("features_total", len(featurestemp) * len(featurestemp[0]))
+    print("features_zero_Count",count_of_features)
+    print("features_total", len(featurestemp) * len(featurestemp[0]))
     print("features_percent", (1 - (count_of_features / count_of_total_features)) * 100)
     ####
     # print("ajd type", type(adj))
     # adjtemp = adj.todense().tolist()
+
+    torch.set_printoptions(threshold=1000000000000000000000000000000000000000000000000000)
+    print(adj.todense())
     adjtemp = adj.todense().tolist()
     count_of_adj = pbe.zero_count_cpp(adjtemp)
     count_total_adj = len(adjtemp) * len(adjtemp[0])
-    # print("adj_zero_Count",count_of_adj)
+    print("adj_zero_Count",count_of_adj)
     # print("adj_total", len(adjtemp) * len(adjtemp[0]))
     print("adj_percent", (1 - (count_of_adj / count_total_adj))* 100)
+
     # print("lables", labels.shape)
     exit(0)
     return adj, features, labels, idx_train, idx_val, idx_test, degree, learning_type
